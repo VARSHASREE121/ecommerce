@@ -1,0 +1,78 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block metadescription %}
+    {% if category %}
+        {{ category.description|truncatewords:155 }}
+    {% else %}
+        welcome to ABC Store where u can buys different items....
+    {% endif %}
+{% endblock %}
+{% block title %}
+    {% if category %}
+        {{ category.name }} - ABC Store
+    {% else %}
+        See our new collection - ABC Store
+    {% endif %}
+{% endblock %}
+{% block content %}
+    {% if category %}
+        <div>
+            <div>
+                <div class="my_row_class">
+                    <div class="mx-auto">
+                    <p><a href="{% url 'shop:allProdCat' %}"></a>Our Product Collection</p>
+                    </div>    
+                </div>
+            </div>
+        </div>
+    {% endif %}
+    <div class="mx_auto">
+    {% if category %}
+    <img class="my_image" src="{{category.image.url}}" alt="{{category.name}}">
+    </div>
+    <br>
+    <div>
+        <h1 class="text-center my_title">{{ category.name }}</h1>
+        <p class="text-justify">{{ category.description }}</p>
+    </div>
+    {% else %}
+    <div>
+        <p style="text-align:center;">
+            <img class="my_image my_image_padding" src="{% static 'img/banner.png' %}" alt="our products"  width="1000px;"  height="500px;">
+        </p>
+    </div>
+    <br>
+    <div>
+        <h1 class="text-center my_title">Our Product Collections</h1>
+        <p class="text-justify">As designers attempting to creating functional work, oftentimes we are required to make our designs look as finished as possible. For example, if you are designing a brand new website for someone, most times you will have to make sure the prototype looks finished by inserting text or photos or what have you. The purpose of this is so the person viewing the prototype has a chance to actually feel and understand the idea behind what you have created. Now in some circumstances, designers may use squares and rectangles to help you visualize what should and could be in a specific location. We all have our own techniques, but one of the most effective techniques is to actually put some text where text goes and some pictures where pictures go to make sure everyone can see the vision you’ve created. Coming up with filler text on the fly is not easy, but it is becoming more and more of a requirement.</p>
+    </div>
+    {% endif %}
+<div class="container">
+    <div class="row mx_auto">
+        {% for product in products.object_list %}   
+         <div class="my_bottom _margin col-9 col-sm-12 col-md-4 xol-lg-4" >
+            <div class="card text-center" style="min-width:18rem;">
+                <a href="{{product.get_url}}"><img class="card-img-top my_image" src="{{product.image.url}}" alt="{{product.name}}" width="100px" height="50px"></a>
+                <div class="card-body">
+                    <h4>{{product.name}}</h4>
+                    <p>{{product.price}}</p>
+                </div>
+            </div>
+         </div>
+        {% endfor %}
+    </div>
+    <div class="mx-auto">
+        {% if products.paginator.num_pages > 1 %}
+        <hr>
+        <div class="text-center">
+        {% for pg in products.paginator.page_range %}
+            <a href="?page={{pg}}" class="btn btn-light btn-sm {% if products.number == pg %} active {% endif %}">{{pg}}</a>
+        {% endfor %}
+        </div>
+        {% endif %}
+    </div>
+    <br>
+</div>
+{% endblock %}
+
+{% comment %} <a href=""><img src="{{product.image.url}}" alt="{{product.name}}"></a> {% endcomment %}
